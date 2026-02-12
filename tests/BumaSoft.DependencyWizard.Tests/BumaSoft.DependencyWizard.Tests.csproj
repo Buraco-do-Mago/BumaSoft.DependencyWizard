@@ -20,4 +20,8 @@
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\BumaSoft.DependencyWizard\BumaSoft.DependencyWizard.csproj" />
+  </ItemGroup>
+
 </Project>
