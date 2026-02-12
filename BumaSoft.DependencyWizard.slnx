@@ -1,2 +1,5 @@
 <Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj" />
+  </Folder>
 </Solution>
