@@ -31,12 +31,25 @@
 
         packages.default = pkgs.buildDotnetModule {
           pname = "BumaSoft.DependencyWizard";
-          version = "1.0.0";
+          version = builtins.head (
+            builtins.match ".*<PropertyGroup>.*<Version>([^<]+)</Version>.*" (
+              builtins.replaceStrings [ "\n" ] [ " " ] (
+                builtins.readFile ./src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj
+              )
+            )
+          );
           src = ./.;
           projectFile = "src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj";
           nugetDeps = ./deps.nix;
           dotnet-sdk = pkgs.dotnet-sdk_10;
           dotnet-runtime = pkgs.dotnet-runtime_10;
+          buildPhase = ''
+            dotnet pack src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj -c Release -o ./nupkgs --no-restore
+          '';
+          installPhase = ''
+            mkdir -p $out
+            cp ./nupkgs/*.nupkg $out/
+          '';
         };
       }
     );
