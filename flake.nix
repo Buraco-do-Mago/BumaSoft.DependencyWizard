@@ -28,6 +28,16 @@
             dotnet-aspnetcore_10
           ];
         };
+
+        packages.default = pkgs.buildDotnetModule {
+          pname = "BumaSoft.DependencyWizard";
+          version = "1.0.0";
+          src = ./.;
+          projectFile = "src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj";
+          nugetDeps = ./deps.nix;
+          dotnet-sdk = pkgs.dotnet-sdk_10;
+          dotnet-runtime = pkgs.dotnet-runtime_10;
+        };
       }
     );
 }
