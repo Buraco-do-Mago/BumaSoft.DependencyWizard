@@ -26,4 +26,4 @@ jobs:
         run: nix build .#default --print-build-logs
 
       - name: Run tests
-        run: nix develop -c dotnet test --no-build
+        run: nix develop -c dotnet test --configuration Release
