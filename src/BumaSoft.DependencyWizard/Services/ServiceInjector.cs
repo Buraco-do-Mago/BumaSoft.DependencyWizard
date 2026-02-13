@@ -9,6 +9,8 @@ public static class ServiceInjector
         this IServiceCollection services, Assembly[] assemblies
     )
     {
+        throw new Exception("test");
+
         var serviceTypes = assemblies
             .SelectMany(a => a.GetTypes())
             .Where(t => t.GetCustomAttribute<ServiceAttribute>() is not null)
