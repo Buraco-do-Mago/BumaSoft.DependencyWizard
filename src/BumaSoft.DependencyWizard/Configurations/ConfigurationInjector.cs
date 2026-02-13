@@ -33,11 +33,15 @@ public static class ConfigurationInjector
         IServiceCollection services, IConfiguration configuration
     ) where TConfiguration : class, new()
     {
-        var configurationName = typeof(TConfiguration)
-            .GetCustomAttribute<ConfigurationAttribute>()?
-            .Section ?? typeof(TConfiguration).Name;
+        var configurationName = GetConfigurationName<TConfiguration>();
         services.Configure<TConfiguration>(options => configuration.GetRequiredSection(configurationName).Bind(options));
-        services.AddScoped(serviceProvider => serviceProvider.GetRequiredService<IOptions<TConfiguration>>().Value);
+        services.AddScoped(serviceProvider => serviceProvider.GetRequiredService<IOptionsSnapshot<TConfiguration>>().Value);
         return services;
     }
+
+    public static string GetConfigurationName<TConfiguration>() where TConfiguration : class =>
+        typeof(TConfiguration).GetConfigurationName();
+
+    public static string GetConfigurationName(this Type type) =>
+        type.GetCustomAttribute<ConfigurationAttribute>()?.Section ?? type.Name;
 }
