@@ -9,7 +9,7 @@ public static class ServiceInjector
         this IServiceCollection services, Assembly[] assemblies
     )
     {
-        throw new Exception("test");
+        throw new Exception("test a");
 
         var serviceTypes = assemblies
             .SelectMany(a => a.GetTypes())
