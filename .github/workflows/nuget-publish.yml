@@ -1,0 +1,67 @@
+name: Build and Publish NuGet package
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Build
+        run: nix build .#default --print-build-logs
+
+      - name: Copy built package
+        run: |
+          mkdir -p ./nupkgs
+          cp -L result/*.nupkg ./nupkgs/ || cp -L result/**/*.nupkg ./nupkgs/
+          ls -la ./nupkgs/
+
+      - name: Extract version from csproj
+        id: version
+        run: |
+          VERSION=$(grep -A 20 '<PropertyGroup>' src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj | \
+            grep -oP '^\s*<Version>\K[^<]+' | head -1)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Package version: $VERSION"
+
+      - name: Publish to NuGet
+        run: |
+          dotnet nuget push ./nupkgs/*.nupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+        env:
+          DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+      - name: Publish to GitHub Packages
+        run: |
+          dotnet nuget push ./nupkgs/*.nupkg \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json \
+            --skip-duplicate
+        env:
+          DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ./nupkgs/*.nupkg
+          retention-days: 30
