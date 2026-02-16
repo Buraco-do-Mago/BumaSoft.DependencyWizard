@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <TargetFramework>net10.0</TargetFramework>
+    <PackageId>BumaSoft.DependencyWizard.SemanticKernel</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Lucas Renato</Authors>
+    <Company>BumaSoft</Company>
+    <Description>A library to automagically inject your Semantic Kernel plugins.</Description>
+    <PackageTags>dependency-injection;configuration;options-pattern;automagic;semantic-kernel;attributes;plugins</PackageTags>
+    <PackageProjectUrl>https://github.com/Buraco-do-Mago/BumaSoft.DependencyWizard</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Buraco-do-Mago/BumaSoft.DependencyWizard</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BumaSoft.DependencyWizard" Version="1.0.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Abstractions" Version="1.70.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.70.0" />
+  </ItemGroup>
+</Project>

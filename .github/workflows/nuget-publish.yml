@@ -2,6 +2,13 @@ name: Build and Publish NuGet package
 
 on:
   workflow_dispatch:
+    inputs:
+      flake_name:
+        description: 'Name of the flake to build (e.g., dependencyWizard)'
+        required: true
+      path:
+        description: 'Path to the project or solution file (e.g., src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj)'
+        required: true
 
 jobs:
   build-and-publish:
@@ -22,7 +29,7 @@ jobs:
             experimental-features = nix-command flakes
 
       - name: Build
-        run: nix build .#default --print-build-logs
+        run: nix build .#${{ inputs.flake_name }} --print-build-logs
 
       - name: Copy built package
         run: |
@@ -33,7 +40,7 @@ jobs:
       - name: Extract version from csproj
         id: version
         run: |
-          VERSION=$(grep -A 20 '<PropertyGroup>' src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj | \
+          VERSION=$(grep -A 20 '<PropertyGroup>' ${{ inputs.path }} | \
             grep -oP '^\s*<Version>\K[^<]+' | head -1)
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Package version: $VERSION"

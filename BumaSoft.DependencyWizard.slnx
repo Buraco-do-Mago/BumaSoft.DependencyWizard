@@ -1,8 +1,10 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/BumaSoft.DependencyWizard.SemanticKernel/BumaSoft.DependencyWizard.SemanticKernel.csproj" />
     <Project Path="src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/BumaSoft.DependencyWizard.SemanticKernel.Tests/BumaSoft.DependencyWizard.SemanticKernel.Tests.csproj" />
     <Project Path="tests/BumaSoft.DependencyWizard.Tests/BumaSoft.DependencyWizard.Tests.csproj" />
   </Folder>
 </Solution>
