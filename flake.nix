@@ -23,22 +23,33 @@
         runtime = pkgs.dotnet-runtime_10;
 
         buildPackage =
-          { name, projectPath }:
-          pkgs.buildDotnetModule {
-            pname = name;
+          {
+            name,
+            projectPath,
+          }:
+          let
+            projectPathString = builtins.replaceStrings [ "${toString ./.}/" ] [ "" ] (toString projectPath);
             version = builtins.head (
               builtins.match ".*<PropertyGroup>.*<Version>([^<]+)</Version>.*" (
                 builtins.replaceStrings [ "\n" ] [ " " ] (builtins.readFile projectPath)
               )
             );
+          in
+          pkgs.buildDotnetModule {
+            pname = name;
+            version = version;
             src = ./.;
-            projectFile = projectPath;
+            projectFile = projectPathString;
             nugetDeps = ./deps.nix;
             dotnet-sdk = sdk;
             dotnet-runtime = runtime;
-            doCheck = false;
             buildPhase = ''
-              dotnet pack ${projectPath} -c Release -o ./nupkgs --no-restore
+              echo "Cleaning"
+              dotnet clean
+              echo "Restoring"
+              dotnet restore --no-cache
+              echo "Packing"
+              dotnet pack ${projectPathString} -c Release -o ./nupkgs --no-restore
             '';
             installPhase = ''
               mkdir -p $out
