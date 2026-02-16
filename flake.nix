@@ -58,12 +58,12 @@
 
         packages.dependencyWizard = buildPackage {
           name = "BumaSoft.DependencyWizard";
-          projectPath = ./src/DependencyWizard/DependencyWizard.csproj;
+          projectPath = ./src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj;
         };
 
         packages.dependencyWizardSemanticKernel = buildPackage {
           name = "BumaSoft.DependencyWizard.SemanticKernel";
-          projectPath = ./src/DependencyWizard.SemanticKernel/DependencyWizard.SemanticKernel.csproj;
+          projectPath = ./src/BumaSoft.DependencyWizard.SemanticKernel/BumaSoft.DependencyWizard.SemanticKernel.csproj;
         };
 
         packages.all = [
