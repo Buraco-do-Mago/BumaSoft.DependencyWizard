@@ -18,6 +18,29 @@
         pkgs = import nixpkgs {
           inherit system;
         };
+
+        buildPackage =
+          { name, projectPath }:
+          pkgs.buildDotnetModule {
+            pname = name;
+            version = builtins.head (
+              builtins.match ".*<PropertyGroup>.*<Version>([^<]+)</Version>.*" (
+                builtins.replaceStrings [ "\n" ] [ " " ] (builtins.readFile projectPath)
+              )
+            );
+            src = ./.;
+            projectFile = projectPath;
+            nugetDeps = ./deps.nix;
+            dotnet-sdk = pkgs.dotnet-sdk_10;
+            dotnet-runtime = pkgs.dotnet-runtime_10;
+            buildPhase = ''
+              dotnet pack ${projectPath} -c Release -o ./nupkgs --no-restore
+            '';
+            installPhase = ''
+              mkdir -p $out
+              cp ./nupkgs/*.nupkg $out/
+            '';
+          };
       in
       with pkgs;
       {
@@ -29,28 +52,20 @@
           ];
         };
 
-        packages.default = pkgs.buildDotnetModule {
-          pname = "BumaSoft.DependencyWizard";
-          version = builtins.head (
-            builtins.match ".*<PropertyGroup>.*<Version>([^<]+)</Version>.*" (
-              builtins.replaceStrings [ "\n" ] [ " " ] (
-                builtins.readFile ./src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj
-              )
-            )
-          );
-          src = ./.;
-          projectFile = "src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj";
-          nugetDeps = ./deps.nix;
-          dotnet-sdk = pkgs.dotnet-sdk_10;
-          dotnet-runtime = pkgs.dotnet-runtime_10;
-          buildPhase = ''
-            dotnet pack src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj -c Release -o ./nupkgs --no-restore
-          '';
-          installPhase = ''
-            mkdir -p $out
-            cp ./nupkgs/*.nupkg $out/
-          '';
+        packages.dependencyWizard = buildPackage {
+          name = "BumaSoft.DependencyWizard";
+          projectPath = ./src/DependencyWizard/DependencyWizard.csproj;
         };
+
+        packages.dependencyWizardSemanticKernel = buildPackage {
+          name = "BumaSoft.DependencyWizard.SemanticKernel";
+          projectPath = ./src/DependencyWizard.SemanticKernel/DependencyWizard.SemanticKernel.csproj;
+        };
+
+        packages.all = [
+          self.packages.${system}.dependencyWizard
+          self.packages.${system}.dependencyWizardSemanticKernel
+        ];
       }
     );
 }
