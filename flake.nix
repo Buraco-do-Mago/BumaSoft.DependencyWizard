@@ -77,10 +77,13 @@
           projectPath = ./src/BumaSoft.DependencyWizard.SemanticKernel/BumaSoft.DependencyWizard.SemanticKernel.csproj;
         };
 
-        packages.all = [
-          self.packages.${system}.dependencyWizard
-          self.packages.${system}.dependencyWizardSemanticKernel
-        ];
+        packages.all = pkgs.symlinkJoin {
+          name = "BumaSoft.DependencyWizard.AllPackages";
+          paths = [
+            self.packages.${system}.dependencyWizard
+            self.packages.${system}.dependencyWizardSemanticKernel
+          ];
+        };
       }
     );
 }
