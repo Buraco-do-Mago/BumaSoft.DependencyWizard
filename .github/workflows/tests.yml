@@ -24,7 +24,7 @@ jobs:
             experimental-features = nix-command flakes
 
       - name: Build with Nix
-        run: nix build .#default --print-build-logs
+        run: nix build .#all --print-build-logs
 
       - name: Run tests
         run: nix develop -c dotnet test --configuration Release
