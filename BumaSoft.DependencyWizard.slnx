@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/BumaSoft.DependencyWizard.SemanticKernel/BumaSoft.DependencyWizard.SemanticKernel.csproj" />
     <Project Path="src/BumaSoft.DependencyWizard/BumaSoft.DependencyWizard.csproj" />
   </Folder>
   <Folder Name="/tests/">
