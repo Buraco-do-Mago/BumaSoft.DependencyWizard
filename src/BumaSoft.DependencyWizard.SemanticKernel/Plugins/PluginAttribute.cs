@@ -6,4 +6,10 @@ namespace BumaSoft.DependencyWizard.SemanticKernel.Plugins;
 public class PluginAttribute : Attribute
 {
     public ServiceScope Scope { get; set; } = ServiceScope.Scoped;
+
+    public PluginAttribute(ServiceScope scope) => Scope = scope;
+
+    public PluginAttribute()
+    {
+    }
 }
