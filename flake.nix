@@ -19,6 +19,9 @@
           inherit system;
         };
 
+        sdk = pkgs.dotnet-sdk_10;
+        runtime = pkgs.dotnet-runtime_10;
+
         buildPackage =
           { name, projectPath }:
           pkgs.buildDotnetModule {
@@ -31,8 +34,9 @@
             src = ./.;
             projectFile = projectPath;
             nugetDeps = ./deps.nix;
-            dotnet-sdk = pkgs.dotnet-sdk_10;
-            dotnet-runtime = pkgs.dotnet-runtime_10;
+            dotnet-sdk = sdk;
+            dotnet-runtime = runtime;
+            doCheck = false;
             buildPhase = ''
               dotnet pack ${projectPath} -c Release -o ./nupkgs --no-restore
             '';
@@ -46,8 +50,8 @@
       {
         devShells.default = mkShell {
           buildInputs = [
-            dotnet-sdk_10
-            dotnet-runtime_10
+            sdk
+            runtime
             dotnet-aspnetcore_10
           ];
         };
