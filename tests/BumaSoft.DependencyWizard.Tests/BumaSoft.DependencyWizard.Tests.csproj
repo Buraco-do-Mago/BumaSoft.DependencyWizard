@@ -23,6 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\BumaSoft.DependencyWizard\BumaSoft.DependencyWizard.csproj" />
+    <ProjectReference Include="..\BumaSoft.DependencyWizard.Tests.InvalidServices\BumaSoft.DependencyWizard.Tests.InvalidServices.csproj" />
+    <ProjectReference Include="..\BumaSoft.DependencyWizard.Tests.ValidServices\BumaSoft.DependencyWizard.Tests.ValidServices.csproj" />
   </ItemGroup>
 
 </Project>
