@@ -57,6 +57,77 @@ public static class ServiceInjector
         return services;
     }
 
+    private static IServiceCollection InjectService(this IServiceCollection services, ServiceScope scope, InjectionMode mode, Type service, Type? abstractionType = null) => mode switch
+    {
+        InjectionMode.Concrete => services.InjectConcreteService(scope, service),
+        InjectionMode.Abstraction => services.InjectAbstractionService(scope, service, abstractionType!),
+        InjectionMode.Both => services.InjectBothServices(scope, service, abstractionType!),
+        _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null),
+    };
+
+    private static IServiceCollection InjectConcreteService(this IServiceCollection services, ServiceScope scope, Type service)
+    {
+        switch (scope)
+        {
+            case ServiceScope.Singleton:
+                services.AddSingleton(service);
+                break;
+            case ServiceScope.Scoped:
+                services.AddScoped(service);
+                break;
+            case ServiceScope.Transient:
+                services.AddTransient(service);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(scope), scope, null);
+        }
+
+        return services;
+    }
+
+    private static IServiceCollection InjectAbstractionService(this IServiceCollection services, ServiceScope scope, Type service, Type abstractionType)
+    {
+        switch (scope)
+        {
+            case ServiceScope.Singleton:
+                services.AddSingleton(abstractionType, service);
+                break;
+            case ServiceScope.Scoped:
+                services.AddScoped(abstractionType, service);
+                break;
+            case ServiceScope.Transient:
+                services.AddTransient(abstractionType, service);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(scope), scope, null);
+        }
+
+        return services;
+    }
+
+    private static IServiceCollection InjectBothServices(this IServiceCollection services, ServiceScope scope, Type service, Type abstractionType)
+    {
+        switch (scope)
+        {
+            case ServiceScope.Singleton:
+                services.AddSingleton(service);
+                services.AddSingleton(abstractionType, serviceProvider => serviceProvider.GetRequiredService(service));
+                break;
+            case ServiceScope.Scoped:
+                services.AddScoped(service);
+                services.AddScoped(abstractionType, serviceProvider => serviceProvider.GetRequiredService(service));
+                break;
+            case ServiceScope.Transient:
+                services.AddTransient(service);
+                services.AddTransient(abstractionType, serviceProvider => serviceProvider.GetRequiredService(service));
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(scope), scope, null);
+        }
+
+        return services;
+    }
+
     private static IServiceCollection InjectService<TService>(ServiceScope scope, IServiceCollection services) where TService : class
     {
         switch (scope)
