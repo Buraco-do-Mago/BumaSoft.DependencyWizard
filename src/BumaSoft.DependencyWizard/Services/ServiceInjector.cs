@@ -35,6 +35,9 @@ public static class ServiceInjector
             if (serviceAttribute.InjectionType is null && serviceAttribute.InjectionMode is InjectionMode.Abstraction or InjectionMode.Both)
                 errors.Add($"Service {serviceType.FullName} cannot be injected as abstraction because it does not have a specified injection type.");
 
+            if (errors.Count != 0)
+                continue;
+
             if (serviceAttribute.InjectionMode is InjectionMode.Concrete or InjectionMode.Both)
             {
                 var injectServiceGenericMethod = injectServiceMethod.MakeGenericMethod(serviceType);
