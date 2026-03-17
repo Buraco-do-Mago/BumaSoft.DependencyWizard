@@ -5,6 +5,8 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/BumaSoft.DependencyWizard.SemanticKernel.Tests/BumaSoft.DependencyWizard.SemanticKernel.Tests.csproj" />
+    <Project Path="tests/BumaSoft.DependencyWizard.Tests.InvalidServices/BumaSoft.DependencyWizard.Tests.InvalidServices.csproj" />
+    <Project Path="tests/BumaSoft.DependencyWizard.Tests.ValidServices/BumaSoft.DependencyWizard.Tests.ValidServices.csproj" />
     <Project Path="tests/BumaSoft.DependencyWizard.Tests/BumaSoft.DependencyWizard.Tests.csproj" />
   </Folder>
 </Solution>
