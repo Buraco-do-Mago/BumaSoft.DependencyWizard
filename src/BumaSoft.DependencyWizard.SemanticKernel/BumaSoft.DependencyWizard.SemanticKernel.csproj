@@ -6,7 +6,7 @@
 
     <TargetFramework>net10.0</TargetFramework>
     <PackageId>BumaSoft.DependencyWizard.SemanticKernel</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Lucas Renato</Authors>
     <Company>BumaSoft</Company>
     <Description>A library to automagically inject your Semantic Kernel plugins.</Description>
@@ -18,8 +18,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BumaSoft.DependencyWizard" Version="1.0.0" />
-    <PackageReference Include="Microsoft.SemanticKernel.Abstractions" Version="1.70.0" />
-    <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.70.0" />
+    <PackageReference Include="BumaSoft.DependencyWizard" Version="1.1.1" />
+    <PackageReference Include="Microsoft.SemanticKernel.Abstractions" Version="1.73.0" />
+    <PackageReference Include="Microsoft.SemanticKernel.Core" Version="1.73.0" />
   </ItemGroup>
 </Project>
